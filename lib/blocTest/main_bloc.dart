@@ -1,39 +1,23 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 
-// void main() {
-//   runApp( CounterBloc() as Widget);
-// }
+abstract class CounterEvent {}
 
-enum CounterEvent { increment, decrement }
+class CounterIncrementPressed extends CounterEvent {}
 
 class CounterBloc extends Bloc<CounterEvent, int> {
-  CounterBloc() : super(0);
-
-  Stream<int> mapEventToState(CounterEvent event) async* {
-    switch (event) {
-      case CounterEvent.increment:
-        yield state + 1;
-        print(state);
-        break;
-      case CounterEvent.decrement:
-        yield state - 1;
-        break;
-    }
+  CounterBloc() : super(0) {
+    on<CounterIncrementPressed>((event, emit) {
+      emit(state + 1);
+    });
   }
 }
 
-Future<void> main() async {
-  var bloc = CounterBloc();
-
-  final subscription = bloc.stream.listen(print);
+void main(List<String> args) async {
+  final bloc = CounterBloc();
   print(bloc.state);
-
-  bloc.add(CounterEvent.increment);
-  print(bloc.state);
-
+  bloc.add(CounterIncrementPressed());
+  bloc.add(CounterIncrementPressed());
+  bloc.add(CounterIncrementPressed());
   await Future.delayed(Duration.zero);
-  //await subscription.cancel();
-  await bloc.close();
+  print(bloc.state);
 }
