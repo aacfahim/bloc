@@ -21,19 +21,6 @@ class TextBloc extends Bloc<StringEvent, StringState> {
       },
     );
   }
-
-  @override
-  Stream<StringState> mapEventToState(StringEvent event) async* {
-    if (event is UpdateStringEvent) {
-      yield StringState(event.name);
-    }
-  }
-
-  // CounterBloc() : super(0) {
-  //   on<CounterIncrementPressed>((event, emit) {
-  //     emit(state + 1);
-  //   });
-  // }
 }
 
 class TextHome extends StatelessWidget {
@@ -54,13 +41,17 @@ class TextHome extends StatelessWidget {
                 children: [
                   TextField(
                     controller: nameController,
+                    onChanged: (value) {
+                      BlocProvider.of<TextBloc>(context)
+                          .add(UpdateStringEvent(value));
+                    },
                   ),
                   ElevatedButton(
                       onPressed: () {
                         BlocProvider.of<TextBloc>(context)
-                            .add(UpdateStringEvent(nameController.text));
+                            .add(UpdateStringEvent(""));
                       },
-                      child: const Text("Add")),
+                      child: const Text("Clear")),
                   Text(state.text),
                 ],
               ),
