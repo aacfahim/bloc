@@ -9,17 +9,25 @@ class InternetCheck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<InternetBloc, InternetState>(
-        builder: (context, state) {
-          if (state is InternetGainedState) {
-            return Center(child: Text("Internet Connected"));
-          } else if (state is InternetLostState) {
-            return Center(child: Text("Internet Lost"));
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
+        body: BlocConsumer<InternetBloc, InternetState>(
+      listener: (context, state) {
+        if (state is InternetGainedState) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Internet Connected")));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Internet Disconnected")));
+        }
+      },
+      builder: (context, state) {
+        if (state is InternetGainedState) {
+          return Center(child: Text("Internet Connected"));
+        } else if (state is InternetLostState) {
+          return Center(child: Text("Internet Lost"));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    ));
   }
 }
