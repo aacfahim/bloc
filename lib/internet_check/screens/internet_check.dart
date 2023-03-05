@@ -1,4 +1,3 @@
-
 import 'package:bloc_practice/internet_check/blocs/internet_bloc.dart';
 import 'package:bloc_practice/internet_check/blocs/internet_state.dart';
 import 'package:bloc_practice/internet_check/cubits/internet_cubit.dart';
